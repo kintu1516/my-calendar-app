@@ -142,7 +142,7 @@ const CalendarPWA = () => {
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Calendar className="text-blue-600" size={24} />
-            <h1 className="text-xl font-bold text-gray-800">MyCalendar</h1>
+            <h1 className="text-xl font-bold text-gray-800">Kintu's Calendar</h1>
           </div>
           <div className="flex items-center gap-2">
             <button
