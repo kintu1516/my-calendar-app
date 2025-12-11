@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Calendar, Plus, Send, Check, X, Menu, Users, Clock, MapPin, Bell } from 'lucide-react';
+import AuthWrapper from './components/AuthWrapper';
 
 const CalendarPWA = () => {
   const [currentView, setCurrentView] = useState('month');
@@ -695,4 +696,12 @@ const CalendarPWA = () => {
   );
 };
 
-export default CalendarPWA;
+const CalendarWithAuth = () => {
+  return (
+    <AuthWrapper>
+      <CalendarPWA />
+    </AuthWrapper>
+  );
+};
+
+export default CalendarWithAuth;
