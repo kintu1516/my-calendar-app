@@ -84,7 +84,19 @@ const CalendarPWA = () => {
           });
           
           return (
-            <div key={hour} className="flex border-b border-gray-200">
+            <div 
+              key={hour} 
+              className="flex border-b border-gray-200 hover:bg-gray-50 cursor-pointer transition-all"
+              onClick={() => {
+                const hourStr = hour.toString().padStart(2, '0');
+                setNewEvent({ 
+                  ...newEvent, 
+                  date: selectedDate.toISOString().split('T')[0],
+                  time: `${hourStr}:00`
+                });
+                setShowEventModal(true);
+              }}
+            >
               <div className="w-20 py-3 text-sm font-medium text-gray-600">
                 {hour === 0 ? '12 AM' : hour < 12 ? `${hour} AM` : hour === 12 ? '12 PM' : `${hour - 12} PM`}
               </div>
@@ -93,6 +105,7 @@ const CalendarPWA = () => {
                   <div
                     key={idx}
                     className={`text-sm text-white rounded-lg px-3 py-2 font-medium ${getColorClass(event.color)}`}
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <div className="font-bold">{event.title}</div>
                     <div className="text-xs opacity-90">{event.time} - {event.duration} min</div>
@@ -129,6 +142,7 @@ const CalendarPWA = () => {
             new Date(e.date).toDateString() === day.toDateString()
           );
           const isToday = day.toDateString() === new Date().toDateString();
+          const isSelected = day.toDateString() === selectedDate.toDateString();
           
           return (
             <div
@@ -136,15 +150,25 @@ const CalendarPWA = () => {
               className={`min-h-96 border-2 rounded-lg p-3 cursor-pointer transition-all ${
                 isToday 
                   ? 'border-blue-500 bg-blue-50 shadow-md' 
+                  : isSelected
+                  ? 'border-purple-500 bg-purple-50 shadow-md'
                   : 'border-gray-200 bg-white hover:border-blue-300 hover:shadow-sm'
               }`}
-              onClick={() => setSelectedDate(day)}
+              onClick={() => {
+                setSelectedDate(day);
+                setNewEvent({ ...newEvent, date: day.toISOString().split('T')[0] });
+              }}
+              onDoubleClick={() => {
+                setSelectedDate(day);
+                setCurrentView('day');
+                setNewEvent({ ...newEvent, date: day.toISOString().split('T')[0] });
+              }}
             >
               <div className="text-center mb-3">
                 <div className="text-xs font-medium text-gray-600">
                   {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][day.getDay()]}
                 </div>
-                <div className={`text-xl font-bold ${isToday ? 'text-blue-600' : 'text-gray-800'}`}>
+                <div className={`text-xl font-bold ${isToday ? 'text-blue-600' : isSelected ? 'text-purple-600' : 'text-gray-800'}`}>
                   {day.getDate()}
                 </div>
               </div>
@@ -153,6 +177,7 @@ const CalendarPWA = () => {
                   <div
                     key={idx}
                     className={`text-xs text-white rounded-md px-2 py-2 font-medium ${getColorClass(event.color)}`}
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <div className="font-bold truncate">{event.title}</div>
                     <div className="text-xs opacity-90">{event.time}</div>
@@ -188,15 +213,22 @@ const CalendarPWA = () => {
           className={`min-h-28 border-2 rounded-lg p-3 cursor-pointer transition-all ${
             isToday 
               ? 'border-blue-500 bg-blue-50 shadow-md' 
+              : date.toDateString() === selectedDate.toDateString()
+              ? 'border-purple-500 bg-purple-50 shadow-md'
               : 'border-gray-200 bg-white hover:border-blue-300 hover:shadow-sm'
           }`}
           onClick={() => {
             setSelectedDate(date);
             setNewEvent({ ...newEvent, date: date.toISOString().split('T')[0] });
           }}
+          onDoubleClick={() => {
+            setSelectedDate(date);
+            setCurrentView('day');
+            setNewEvent({ ...newEvent, date: date.toISOString().split('T')[0] });
+          }}
         >
           <div className={`text-base font-bold mb-2 ${
-            isToday ? 'text-blue-600' : 'text-gray-800'
+            isToday ? 'text-blue-600' : date.toDateString() === selectedDate.toDateString() ? 'text-purple-600' : 'text-gray-800'
           }`}>
             {day}
           </div>
