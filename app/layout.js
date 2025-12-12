@@ -13,7 +13,6 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Kintu's Calendar app",
-  manifest: '/manifest.json',
   themeColor: '#2563eb',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
 };
