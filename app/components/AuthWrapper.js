@@ -79,7 +79,8 @@ const AuthWithPatienceTest = ({ children }) => {
     const stored = localStorage.getItem('patience_test_data');
     
     // 40% chance to show
-    if (Math.random() < 1.0) {
+    //temp disabling patience test for debugging
+    if (false) {
       selectRandomQuestion();
       setShowPatienceTest(true);
       
