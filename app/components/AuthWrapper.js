@@ -75,24 +75,39 @@ const AuthWithPatienceTest = ({ children }) => {
   };
 
   const checkIfShouldShowPatienceTest = () => {
-    const today = new Date().toDateString();
-    const stored = localStorage.getItem('patience_test_data');
-    
-    // 40% chance to show
-    //temp disabling patience test for debugging
-    if (Math.random() < 1.0) {
-      selectRandomQuestion();
-      setShowPatienceTest(true);
-      
-      const newData = stored ? JSON.parse(stored) : { date: today, count: 0 };
-      if (newData.date !== today) {
-        newData.date = today;
-        newData.count = 0;
-      }
-      newData.count += 1;
-      localStorage.setItem('patience_test_data', JSON.stringify(newData));
+  // Check if already shown in this browser session
+  if (sessionStorage.getItem('patience_test_shown')) {
+    console.log('Patience test already shown this session');
+    return;
+  }
+
+  const today = new Date().toDateString();
+  const stored = localStorage.getItem('patience_test_data');
+  
+  if (stored) {
+    const data = JSON.parse(stored);
+    if (data.date === today && data.count >= 2) {
+      return;
     }
-  };
+  }
+  
+  // 80% chance to show (change 1.0 back to 0.8 for production)
+  if (Math.random() < 1.0) {
+    selectRandomQuestion();
+    setShowPatienceTest(true);
+    
+    // Mark as shown for this session
+    sessionStorage.setItem('patience_test_shown', 'true');
+    
+    const newData = stored ? JSON.parse(stored) : { date: today, count: 0 };
+    if (newData.date !== today) {
+      newData.date = today;
+      newData.count = 0;
+    }
+    newData.count += 1;
+    localStorage.setItem('patience_test_data', JSON.stringify(newData));
+  }
+};
 
   const selectRandomQuestion = async () => {
     const useCustom = Math.random() < 0.6;
@@ -326,8 +341,8 @@ const signInWithGoogle = async () => {
           </h2>
 
           <p className="text-xl text-gray-700 mb-8 leading-relaxed">
-            Hahaha I was just messing around and wasting your time to check your patience, 
-            if you were losing patience - <span className="font-bold text-red-600">watch less reels</span> 😏
+            Hahaha I was just messing around and wasting your time. Feel free to press continue!
+          
           </p>
 
           <button
