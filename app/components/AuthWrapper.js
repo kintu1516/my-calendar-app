@@ -195,13 +195,15 @@ const signInWithGoogle = async () => {
 };
 
   const signOut = async () => {
-    try {
-      await supabase.auth.signOut();
-      setUser(null);
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
+  try {
+    await supabase.auth.signOut();
+    setUser(null);
+    // Clear session storage on sign out
+    sessionStorage.removeItem('patience_test_shown');
+  } catch (error) {
+    console.error('Error signing out:', error);
+  }
+};
 
   if (loading) {
     return (
