@@ -80,7 +80,7 @@ const AuthWithPatienceTest = ({ children }) => {
     
     // 40% chance to show
     //temp disabling patience test for debugging
-    if (false) {
+    if (Math.random() < 1.0) {
       selectRandomQuestion();
       setShowPatienceTest(true);
       
