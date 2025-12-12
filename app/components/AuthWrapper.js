@@ -162,19 +162,21 @@ const AuthWithPatienceTest = ({ children }) => {
   };
 
   const signInWithGoogle = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/`
-        }
-      });
-      if (error) throw error;
-    } catch (error) {
-      console.error('Error signing in:', error);
-      alert('Error signing in with Google. Please try again.');
-    }
-  };
+  try {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.hostname === 'localhost' 
+          ? 'http://localhost:3000/'
+          : 'https://withkintu.com/'
+      }
+    });
+    if (error) throw error;
+  } catch (error) {
+    console.error('Error signing in:', error);
+    alert('Error signing in with Google. Please try again.');
+  }
+};
 
   const signOut = async () => {
     try {
