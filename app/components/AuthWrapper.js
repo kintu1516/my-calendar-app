@@ -162,14 +162,14 @@ const AuthWithPatienceTest = ({ children }) => {
     setUserAnswer('');
   };
 
-  const signInWithGoogle = async () => {
+const signInWithGoogle = async () => {
   try {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: window.location.hostname === 'localhost' 
           ? 'http://localhost:3000/'
-          : 'https://withkintu.com/'
+          : 'https://withkintu.com/'  // NO www
       }
     });
     if (error) throw error;
