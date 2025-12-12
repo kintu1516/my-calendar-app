@@ -76,20 +76,7 @@ const AuthWithPatienceTest = ({ children }) => {
 
   const checkIfShouldShowPatienceTest = () => {
   // Check if already shown in this browser session
-  if (sessionStorage.getItem('patience_test_shown')) {
-    console.log('Patience test already shown this session');
-    return;
-  }
-
-  const today = new Date().toDateString();
-  const stored = localStorage.getItem('patience_test_data');
   
-  if (stored) {
-    const data = JSON.parse(stored);
-    if (data.date === today && data.count >= 2) {
-      return;
-    }
-  }
   
   // 80% chance to show (change 1.0 back to 0.8 for production)
   if (Math.random() < 1.0) {
@@ -97,7 +84,7 @@ const AuthWithPatienceTest = ({ children }) => {
     setShowPatienceTest(true);
     
     // Mark as shown for this session
-    sessionStorage.setItem('patience_test_shown', 'true');
+    //sessionStorage.setItem('patience_test_shown', 'true');
     
     const newData = stored ? JSON.parse(stored) : { date: today, count: 0 };
     if (newData.date !== today) {
@@ -199,7 +186,7 @@ const signInWithGoogle = async () => {
     await supabase.auth.signOut();
     setUser(null);
     // Clear session storage on sign out
-    sessionStorage.removeItem('patience_test_shown');
+   // sessionStorage.removeItem('patience_test_shown');
   } catch (error) {
     console.error('Error signing out:', error);
   }
